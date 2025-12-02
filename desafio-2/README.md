@@ -44,19 +44,9 @@ uv run compactacao_string.py "aaabbcaaa"
 
 ## Executar os Testes
 
-### Com pytest (recomendado)
-
 ```bash
 uv run pytest -v
 ```
-
-### Executar diretamente
-
-```bash
-python test_compactacao_string.py
-```
-
-## Cobertura de Testes
 
 Os testes cobrem:
 
