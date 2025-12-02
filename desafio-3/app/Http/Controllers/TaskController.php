@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TaskController extends Controller
@@ -16,17 +18,25 @@ class TaskController extends Controller
         return view('tasks.index', compact('tasks'));
     }
 
-    public function store(StoreTaskRequest $request): RedirectResponse
+    public function store(StoreTaskRequest $request): JsonResponse|RedirectResponse
     {
-        Task::create($request->validated());
+        $task = Task::create($request->validated());
+
+        if ($request->wantsJson()) {
+            return response()->json($task, 201);
+        }
 
         return redirect()->route('tasks.index')
             ->with('success', 'Task criada com sucesso!');
     }
 
-    public function toggle(Task $task): RedirectResponse
+    public function toggle(Request $request, Task $task): JsonResponse|RedirectResponse
     {
         $task->update(['done' => !$task->done]);
+
+        if ($request->wantsJson()) {
+            return response()->json($task);
+        }
 
         $status = $task->done ? 'concluída' : 'pendente';
 
@@ -34,9 +44,13 @@ class TaskController extends Controller
             ->with('success', "Task marcada como {$status}!");
     }
 
-    public function destroy(Task $task): RedirectResponse
+    public function destroy(Request $request, Task $task): JsonResponse|RedirectResponse
     {
         $task->delete();
+
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true]);
+        }
 
         return redirect()->route('tasks.index')
             ->with('success', 'Task excluída com sucesso!');

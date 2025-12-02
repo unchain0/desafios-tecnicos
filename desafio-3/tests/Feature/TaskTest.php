@@ -94,7 +94,6 @@ class TaskTest extends TestCase
         $response = $this->post('/tasks', ['title' => '<script>alert("xss")</script>Task']);
 
         $response->assertRedirect('/tasks');
-        // strip_tags removes tags but keeps inner content
         $this->assertDatabaseHas('tasks', ['title' => 'alert("xss")Task']);
         $this->assertDatabaseMissing('tasks', ['title' => '<script>alert("xss")</script>Task']);
     }
