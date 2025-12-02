@@ -1,0 +1,17 @@
+[project]
+name = "desafios-tecnicos"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "loguru>=0.7.3",
+    "pandas>=2.3.3",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.19.0",
+    "pandas-stubs>=2.3.3.251201",
+    "ruff>=0.14.7",
+]
