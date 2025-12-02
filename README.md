@@ -42,4 +42,5 @@ uv sync
 ```bash
 uv run ruff check .
 uv run mypy .
+uv run pytest -v
 ```
