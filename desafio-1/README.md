@@ -40,13 +40,12 @@ O arquivo CSV deve conter duas colunas:
 | produto | string | Nome do produto  |
 | preco   | float  | Preço do produto |
 
-**Exemplo:**
+O script também detecta automaticamente o formato:
 
-```csv
-produto,preco
-Notebook Dell,3499.90
-Mouse Logitech,89.90
-```
+| Formato    | Delimitador | Decimal | Exemplo   |
+| ---------- | ----------- | ------- | --------- |
+| Brasileiro | `;`         | `,`     | `3499,90` |
+| Americano  | `,`         | `.`     | `3499.90` |
 
 ## Formato do JSON de Saída
 
@@ -65,7 +64,7 @@ O script trata os seguintes casos:
 
 - **Arquivo não encontrado**: Exibe mensagem e encerra com código 1
 - **Linhas com colunas insuficientes**: Ignora a linha e exibe aviso
-- **Nome de produto vazio**: Ignora a linha e exibe aviso
+- **Nome do produto ou preço vazios**: Ignora a linha e exibe aviso
 - **Preço não numérico**: Ignora a linha e exibe aviso
 - **Preço negativo**: Ignora a linha e exibe aviso
 - **Arquivo sem dados válidos**: Exibe mensagem e encerra com código 1
@@ -74,15 +73,13 @@ O script trata os seguintes casos:
 
 ```txt
 $ uv run manipulacao_dados.py
-
 ==================================================
-RESULTADO DO PROCESSAMENTO
+            RESULTADO DO PROCESSAMENTO
 ==================================================
 Total de produtos: 10
 Produto mais caro: Notebook Dell
 Produto mais barato: Mousepad XL
 Preço médio: R$ 716.69
 ==================================================
-
-Resultado salvo em: resultado.json
+SUCCESS: Resultado salvo em 'resultado.json'
 ```

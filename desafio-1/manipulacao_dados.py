@@ -5,6 +5,7 @@ Leitura de CSV, processamento e geração de JSON.
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import NamedTuple
@@ -23,9 +24,63 @@ class ResultadoProcessamento(NamedTuple):
     preco_medio: float
 
 
+def detectar_delimitador(caminho: Path) -> str:
+    """
+    Detecta o delimitador do CSV (';' ou ',').
+
+    Args:
+        caminho: Caminho para o arquivo CSV.
+
+    Returns:
+        str: O delimitador detectado (';' ou ',').
+    """
+    with open(caminho, encoding="utf-8") as f:
+        primeira_linha = f.readline()
+    return ";" if ";" in primeira_linha else ","
+
+
+def normalizar_preco(valor: object) -> float | None:
+    """
+    Normaliza um valor de preço para float usando regex.
+
+    Formatos suportados:
+    - 3499.90 ou 3499,90 (decimal simples)
+    - 3.499,90 (BR: milhares='.', decimal=',')
+    - 3,499.90 (US: milhares=',', decimal='.')
+    - 3.499 ou 3,499 (apenas milhares, sem decimal)
+
+    Args:
+        valor: Valor a ser normalizado (número ou string).
+
+    Returns:
+        float | None: O valor normalizado como float, ou None se inválido.
+    """
+    if not (valor := str(valor).strip()):
+        return None
+
+    try:
+        if re.search(r",\d{1,2}$", valor):
+            # BR: termina com ,XX → remove pontos, troca vírgula por ponto
+            valor = valor.replace(".", "").replace(",", ".")
+        elif re.search(r"\.\d{1,2}$", valor):
+            # US: termina com .XX → remove vírgulas e pontos extras
+            valor = re.sub(r"[.,](?=.*\.)", "", valor)
+        else:
+            # Sem decimal: remove todos os separadores
+            valor = re.sub(r"[.,]", "", valor)
+
+        return float(valor)
+    except ValueError:
+        return None
+
+
 def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
     """
     Lê um arquivo CSV contendo produtos e preços.
+
+    Detecta automaticamente:
+    - Delimitador de colunas: ',' ou ';'
+    - Formato de cada preço individualmente (BR ou US)
 
     Args:
         caminho_arquivo: Caminho para o arquivo CSV.
@@ -42,7 +97,8 @@ def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
     if not arquivo.exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {caminho_arquivo}")
 
-    df = pd.read_csv(arquivo, encoding="utf-8")
+    delimitador = detectar_delimitador(arquivo)
+    df = pd.read_csv(arquivo, encoding="utf-8", sep=delimitador, dtype={"preco": str})
 
     if df.empty:
         raise ValueError("Arquivo CSV está vazio")
@@ -56,7 +112,7 @@ def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
 
     df = df[df["produto"].notna() & (df["produto"].astype(str).str.strip() != "")]
 
-    df["preco"] = pd.to_numeric(df["preco"], errors="coerce")
+    df["preco"] = df["preco"].apply(normalizar_preco)
 
     df = df[df["preco"].notna() & (df["preco"] >= 0)]
 
@@ -70,34 +126,34 @@ def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
     return df
 
 
-def processar_produtos(df: pd.DataFrame) -> ResultadoProcessamento:
+def processar_produtos(products_df: pd.DataFrame) -> ResultadoProcessamento:
     """
     Processa o DataFrame de produtos e calcula estatísticas.
 
     Args:
-        df: DataFrame com produtos.
+        products_df: DataFrame com produtos.
 
     Returns:
         ResultadoProcessamento com as estatísticas calculadas.
     """
-    if df.empty:
+    if products_df.empty:
         raise ValueError("DataFrame de produtos está vazio")
 
-    idx_mais_caro = df["preco"].idxmax()
-    idx_mais_barato = df["preco"].idxmin()
+    idx_mais_caro = products_df["preco"].idxmax()
+    idx_mais_barato = products_df["preco"].idxmin()
 
     return ResultadoProcessamento(
-        total_produtos=len(df),
-        produto_mais_caro=str(df.loc[idx_mais_caro, "produto"]),
-        produto_mais_barato=str(df.loc[idx_mais_barato, "produto"]),
-        preco_medio=round(float(df["preco"].mean()), 2),
+        total_produtos=len(products_df),
+        produto_mais_caro=str(products_df.loc[idx_mais_caro, "produto"]),
+        produto_mais_barato=str(products_df.loc[idx_mais_barato, "produto"]),
+        preco_medio=round(float(products_df["preco"].mean()), 2),
     )
 
 
 def exibir_resultado(resultado: ResultadoProcessamento) -> None:
     """Exibe o resultado do processamento no console."""
     print("=" * 50)
-    print("RESULTADO DO PROCESSAMENTO")
+    print("RESULTADO DO PROCESSAMENTO".center(50))
     print("=" * 50)
     print(f"Total de produtos: {resultado.total_produtos}")
     print(f"Produto mais caro: {resultado.produto_mais_caro}")
@@ -124,7 +180,7 @@ def salvar_json(resultado: ResultadoProcessamento, caminho_saida: str) -> None:
     with open(caminho_saida, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
 
-    logger.success(f"Resultado salvo em: {caminho_saida}")
+    logger.success(f"Resultado salvo em '{caminho_saida}'")
 
 
 def processar_arquivo_csv(
