@@ -91,6 +91,13 @@ class TestCompactarString:
         """Testa emojis."""
         assert compactar_string("😀😀😀") == "😀3"
 
+    # Propriedades
+    def test_tamanho_maximo(self) -> None:
+        """Garante que saída nunca excede 2x o tamanho da entrada."""
+        entrada = "abcdefghij"
+        resultado = compactar_string(entrada)
+        assert len(resultado) <= len(entrada) * 2
+
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
