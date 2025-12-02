@@ -42,20 +42,37 @@ Acesse: **<http://localhost:8000>**
 
 ```txt
 app/
-├── Http/Controllers/
-│   └── TaskController.php
+├── Http/
+│   ├── Controllers/
+│   │   └── TaskController.php
+│   └── Requests/
+│       └── StoreTaskRequest.php
 ├── Models/
 │   └── Task.php
+├── Services/
+│   └── TaskService.php
 database/
 ├── migrations/
 │   └── 2024_01_01_000000_create_tasks_table.php
+├── seeders/
+│   └── TaskSeeder.php
 resources/views/
+├── components/
+│   ├── alert.blade.php
+│   ├── button.blade.php
+│   ├── card.blade.php
+│   └── input.blade.php
 ├── layouts/
 │   └── app.blade.php
 ├── tasks/
 │   └── index.blade.php
 routes/
 └── web.php
+tests/
+├── Feature/
+│   └── TaskTest.php
+├── Unit/
+│   └── TaskServiceTest.php
 ```
 
 ## Rotas Disponíveis
@@ -66,33 +83,6 @@ routes/
 | POST   | `/tasks`             | Criar nova task        |
 | PATCH  | `/tasks/{id}/toggle` | Alternar status (done) |
 | DELETE | `/tasks/{id}`        | Excluir task           |
-
-## Testando via cURL
-
-### Listar tasks
-
-```bash
-curl http://localhost:8000/tasks
-```
-
-### Criar task
-
-```bash
-curl -X POST http://localhost:8000/tasks \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "title=Minha nova task" \
-  -d "_token=$(curl -s http://localhost:8000/tasks | grep -oP 'name="_token" value="\K[^"]+')"
-```
-
-### Alternar status
-
-```bash
-curl -X PATCH http://localhost:8000/tasks/1/toggle \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "_token=$(curl -s http://localhost:8000/tasks | grep -oP 'name="_token" value="\K[^"]+')"
-```
-
-> **Nota:** Para testes mais simples, use o navegador ou Postman.
 
 ## Testando via Navegador
 
@@ -107,9 +97,10 @@ curl -X PATCH http://localhost:8000/tasks/1/toggle \
 - **Criar task**: Formulário com validação (título obrigatório, máx. 255 caracteres)
 - **Listar tasks**: Exibe todas as tasks ordenadas por data de criação
 - **Toggle status**: Alterna entre pendente e concluída
-- **Excluir task**: Remoção com confirmação
+- **Excluir task**: Remoção instantânea
+- **Ações AJAX**: Operações instantâneas sem reload de página (Alpine.js)
 - **Feedback visual**: Tasks concluídas aparecem riscadas
-- **Mensagens flash**: Feedback de sucesso nas operações
+- **Mensagens de sucesso**: Feedback visual nas operações
 - **Design responsivo**: Interface adaptada para mobile e desktop
 
 ## Testes Automatizados
@@ -118,18 +109,40 @@ curl -X PATCH http://localhost:8000/tasks/1/toggle \
 php artisan test
 ```
 
-Os testes cobrem:
+## Arquitetura
 
-- Listagem de tasks
-- Criação com validação
-- Toggle de status
-- Exclusão de tasks
-- Redirecionamento da raiz
+O projeto segue boas práticas de arquitetura Laravel:
+
+- **Skinny Controllers**: Controllers apenas recebem request e delegam para Services
+- **Service Layer**: Lógica de negócio isolada em `App\Services\TaskService`
+- **Form Requests**: Validação e sanitização em classes dedicadas
+- **Blade Components**: UI componentizada e reutilizável
+- **AJAX com Alpine.js**: Ações instantâneas sem reload de página
+
+## Qualidade de Código
+
+```bash
+vendor/bin/pint
+vendor/bin/pint --test
+php artisan test
+```
+
+## CI/CD
+
+O projeto inclui GitHub Actions (`.github/workflows/ci.yml`) que executa:
+
+- Instalação de dependências
+- Migrations
+- Laravel Pint (code style)
+- Testes automatizados
 
 ## Tecnologias
 
 - **Laravel 12** - Framework PHP
-- **Blade** - Template engine
+- **Blade Components** - UI componentizada
+- **Alpine.js** - Reatividade no frontend
 - **TailwindCSS** - Framework CSS (via CDN)
 - **SQLite** - Banco de dados
 - **PHPUnit** - Testes automatizados
+- **Laravel Pint** - Code style
+- **GitHub Actions** - CI/CD

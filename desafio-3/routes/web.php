@@ -3,7 +3,7 @@
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => redirect()->route('tasks.index'));
+Route::get('/', fn () => redirect()->route('tasks.index'));
 
 Route::middleware(['throttle:60,1'])->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');

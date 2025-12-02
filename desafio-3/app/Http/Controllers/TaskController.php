@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
+use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,16 +12,24 @@ use Illuminate\View\View;
 
 class TaskController extends Controller
 {
-    public function index(): View
+    public function __construct(
+        private readonly TaskService $taskService
+    ) {}
+
+    public function index(Request $request): JsonResponse | View
     {
-        $tasks = Task::orderBy('created_at', 'desc')->get();
+        $tasks = $this->taskService->getAll();
+
+        if ($request->wantsJson()) {
+            return response()->json($tasks);
+        }
 
         return view('tasks.index', compact('tasks'));
     }
 
-    public function store(StoreTaskRequest $request): JsonResponse|RedirectResponse
+    public function store(StoreTaskRequest $request): JsonResponse | RedirectResponse
     {
-        $task = Task::create($request->validated());
+        $task = $this->taskService->create($request->validated());
 
         if ($request->wantsJson()) {
             return response()->json($task, 201);
@@ -30,9 +39,9 @@ class TaskController extends Controller
             ->with('success', 'Task criada com sucesso!');
     }
 
-    public function toggle(Request $request, Task $task): JsonResponse|RedirectResponse
+    public function toggle(Request $request, Task $task): JsonResponse | RedirectResponse
     {
-        $task->update(['done' => !$task->done]);
+        $task = $this->taskService->toggle($task);
 
         if ($request->wantsJson()) {
             return response()->json($task);
@@ -44,9 +53,9 @@ class TaskController extends Controller
             ->with('success', "Task marcada como {$status}!");
     }
 
-    public function destroy(Request $request, Task $task): JsonResponse|RedirectResponse
+    public function destroy(Request $request, Task $task): JsonResponse | RedirectResponse
     {
-        $task->delete();
+        $this->taskService->delete($task);
 
         if ($request->wantsJson()) {
             return response()->json(['success' => true]);
