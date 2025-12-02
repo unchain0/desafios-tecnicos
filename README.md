@@ -31,9 +31,9 @@ desafios-tecnicos/
 ## Executando
 
 ```bash
+git clone https://github.com/unchain0/desafios-tecnicos.git
+cd desafios-tecnicos
 uv sync
-
-uv run desafio-1/manipulacao_dados.py
 ```
 
 ## Qualidade de Código
