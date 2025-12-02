@@ -26,7 +26,8 @@ desafios-tecnicos/
 
 ## Requisitos
 
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) para gerenciamento de dependências
+- [git](https://git-scm.com/install/) para clonar o repositório
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) para gerenciamento de dependências e execução dos scripts
 
 ## Executando
 
