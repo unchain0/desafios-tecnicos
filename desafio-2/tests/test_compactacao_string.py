@@ -16,78 +16,78 @@ class TestCompactarString:
     """Testes para a função compactar_string."""
 
     # Casos normais
-    def test_caracteres_repetidos_consecutivos(self):
+    def test_caracteres_repetidos_consecutivos(self) -> None:
         """Testa sequências de caracteres repetidos."""
         assert compactar_string("aaabbcaaa") == "a3b2c1a3"
 
-    def test_sem_repeticoes(self):
+    def test_sem_repeticoes(self) -> None:
         """Testa string sem caracteres repetidos consecutivos."""
         assert compactar_string("abc") == "a1b1c1"
 
-    def test_todos_iguais(self):
+    def test_todos_iguais(self) -> None:
         """Testa string com todos caracteres iguais."""
         assert compactar_string("aaaaa") == "a5"
 
-    def test_alternados(self):
+    def test_alternados(self) -> None:
         """Testa caracteres alternados."""
         assert compactar_string("ababab") == "a1b1a1b1a1b1"
 
     # Casos de borda
-    def test_string_vazia(self):
+    def test_string_vazia(self) -> None:
         """Testa string vazia."""
         assert compactar_string("") == ""
 
-    def test_caractere_unico(self):
+    def test_caractere_unico(self) -> None:
         """Testa string com apenas um caractere."""
         assert compactar_string("a") == "a1"
 
-    def test_dois_caracteres_iguais(self):
+    def test_dois_caracteres_iguais(self) -> None:
         """Testa string com dois caracteres iguais."""
         assert compactar_string("aa") == "a2"
 
-    def test_dois_caracteres_diferentes(self):
+    def test_dois_caracteres_diferentes(self) -> None:
         """Testa string com dois caracteres diferentes."""
         assert compactar_string("ab") == "a1b1"
 
     # Caracteres especiais
-    def test_numeros(self):
+    def test_numeros(self) -> None:
         """Testa string contendo números."""
         assert compactar_string("111223") == "132231"
 
-    def test_caracteres_especiais(self):
+    def test_caracteres_especiais(self) -> None:
         """Testa string com caracteres especiais."""
         assert compactar_string("!!!@@#") == "!3@2#1"
 
-    def test_espacos(self):
+    def test_espacos(self) -> None:
         """Testa string com espaços."""
         assert compactar_string("   aa  ") == " 3a2 2"
 
-    def test_misturado(self):
+    def test_misturado(self) -> None:
         """Testa string com letras, números e caracteres especiais."""
         assert compactar_string("aaa111!!!") == "a313!3"
 
     # Maiúsculas e minúsculas
-    def test_case_sensitive(self):
+    def test_case_sensitive(self) -> None:
         """Testa que maiúsculas e minúsculas são tratadas como diferentes."""
         assert compactar_string("AAAaaa") == "A3a3"
 
-    def test_mixed_case(self):
+    def test_mixed_case(self) -> None:
         """Testa alternância entre maiúsculas e minúsculas."""
         assert compactar_string("AaAa") == "A1a1A1a1"
 
     # Strings longas
-    def test_string_longa(self):
+    def test_string_longa(self) -> None:
         """Testa string mais longa."""
         entrada = "a" * 100 + "b" * 50 + "c" * 25
         esperado = "a100b50c25"
         assert compactar_string(entrada) == esperado
 
     # Unicode
-    def test_unicode(self):
+    def test_unicode(self) -> None:
         """Testa caracteres unicode."""
         assert compactar_string("àààééô") == "à3é2ô1"
 
-    def test_emojis(self):
+    def test_emojis(self) -> None:
         """Testa emojis."""
         assert compactar_string("😀😀😀") == "😀3"
 
