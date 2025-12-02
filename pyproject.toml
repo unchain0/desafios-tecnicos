@@ -1,7 +1,7 @@
 [project]
 name = "desafios-tecnicos"
 version = "0.1.0"
-description = "Desafios técnicos"
+description = "Desafios técnicos para vaga de desenvolvedor júnior"
 readme = "README.md"
 requires-python = ">=3.13,<3.14"
 dependencies = [
@@ -14,5 +14,9 @@ dev = [
     "mypy>=1.19.0",
     "pandas-stubs>=2.3.3.251201",
     "pre-commit>=4.5.0",
+    "pytest>=9.0.1",
     "ruff>=0.14.7",
 ]
+
+[tool.mypy]
+ignore_missing_imports = true
