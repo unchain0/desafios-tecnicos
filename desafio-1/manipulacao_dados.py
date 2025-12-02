@@ -214,33 +214,25 @@ def parse_args() -> argparse.Namespace:
     """Processa argumentos da linha de comando."""
     parser = argparse.ArgumentParser(
         description="Processa arquivo CSV de produtos e gera estatísticas em JSON.",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
         add_help=False,
-        epilog="""
-exemplos:
-  %(prog)s                         # usa produtos.csv e gera resultado.json
-  %(prog)s produtos                # usa produtos.csv e gera resultado.json  
-  %(prog)s dados resultado         # usa dados.csv e gera resultado.json
-  %(prog)s entrada.csv saida.json  # usa entrada.csv e gera saida.json
-""",
     )
     parser.add_argument(
         "-h",
         "--help",
         action="help",
-        help="exibe esta mensagem de ajuda e sai",
+        help="Mostra esta mensagem de ajuda e sai",
     )
     parser.add_argument(
         "entrada",
         nargs="?",
         default="produtos.csv",
-        help="arquivo CSV de entrada (default: produtos.csv)",
+        help="Arquivo CSV de entrada (default: produtos.csv)",
     )
     parser.add_argument(
         "saida",
         nargs="?",
         default="resultado.json",
-        help="arquivo JSON de saída (default: resultado.json)",
+        help="Arquivo JSON de saída (default: resultado.json)",
     )
     return parser.parse_args()
 

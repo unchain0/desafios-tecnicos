@@ -47,10 +47,14 @@ def compactar_string(s: str) -> str:
     return "".join(resultado)
 
 
-def main():
+def main() -> None:
     """CLI simples para compactação de strings."""
     parser = argparse.ArgumentParser(
-        description="Compacta uma string substituindo caracteres repetidos consecutivos."
+        description="Compacta uma string substituindo caracteres repetidos consecutivos.",
+        add_help=False,
+    )
+    parser.add_argument(
+        "-h", "--help", action="help", help="Mostra esta mensagem de ajuda e sai"
     )
     parser.add_argument("string", help="String a ser compactada")
     args = parser.parse_args()
