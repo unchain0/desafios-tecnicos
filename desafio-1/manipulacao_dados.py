@@ -204,8 +204,8 @@ def processar_arquivo_csv(
 
 
 def garantir_extensao(caminho: Path, extensao: str) -> Path:
-    """Adiciona extensão ao arquivo se não estiver presente."""
-    if caminho.suffix.lower() != extensao:
+    """Adiciona ou normaliza extensão do arquivo para lowercase."""
+    if caminho.suffix.lower() != extensao or caminho.suffix != extensao:
         return caminho.with_suffix(extensao)
     return caminho
 
