@@ -18,11 +18,11 @@ desafios-tecnicos/
 
 ## Desafios
 
-| #   | Título                | Descrição                                            | Status |
-| --- | --------------------- | ---------------------------------------------------- | ------ |
-| 1   | Manipulação de Dados  | Leitura de CSV, processamento e geração de JSON      | ✅     |
-| 2   | Compactação de String | Implementação de algoritmo de compactação de strings | ✅     |
-| 3   | —                     | —                                                    | ⏳     |
+| #   | Título                | Descrição                                             | Status |
+| --- | --------------------- | ----------------------------------------------------- | ------ |
+| 1   | Manipulação de Dados  | Leitura de CSV, processamento e geração de JSON       | ✅     |
+| 2   | Compactação de String | Implementação de algoritmo de compactação de strings  | ✅     |
+| 3   | Mini CRUD em Laravel  | Mini CRUD de tarefas com Laravel, Blade e TailwindCSS | ✅     |
 
 ## Requisitos
 
