@@ -262,8 +262,14 @@ def main() -> None:
     args = parse_args()
     diretorio_script = Path(__file__).parent
 
-    caminho_csv = garantir_extensao(diretorio_script / args.entrada, ".csv")
-    caminho_json = garantir_extensao(Path(args.saida), ".json")
+    input_dir = diretorio_script / "data" / "input"
+    output_dir = diretorio_script / "data" / "output"
+
+    input_dir.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    caminho_csv = garantir_extensao(input_dir / args.entrada, ".csv")
+    caminho_json = garantir_extensao(output_dir / args.saida, ".json")
 
     try:
         processar_arquivo_csv(str(caminho_csv), str(caminho_json))
