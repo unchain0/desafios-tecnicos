@@ -9,7 +9,7 @@ Implementação de uma função que compacta strings substituindo sequências de
 | `aaabbcaaa` | `a3b2c1a3` |
 | `abc`       | `a1b1c1`   |
 | `aaaaa`     | `a5`       |
-| (vazia)     | (vazia)    |
+| `''`        | `''`       |
 
 ## Estrutura do Projeto
 
