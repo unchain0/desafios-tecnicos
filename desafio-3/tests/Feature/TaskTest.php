@@ -131,6 +131,15 @@ class TaskTest extends TestCase
         $this->assertDatabaseHas('tasks', ['title' => 'Nova Task JSON', 'done' => false]);
     }
 
+    public function test_store_validates_title_max_length_json(): void
+    {
+        $response = $this->postJson('/tasks', ['title' => str_repeat('a', 256)]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('title');
+        $this->assertDatabaseCount('tasks', 0);
+    }
+
     public function test_toggle_returns_json_when_requested(): void
     {
         $task = Task::create(['title' => 'JSON Toggle', 'done' => false]);
