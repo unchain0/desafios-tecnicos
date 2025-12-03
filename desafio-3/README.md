@@ -20,7 +20,7 @@ cp .env.example .env
 # 3. Gerar chave da aplicação
 php artisan key:generate
 
-# 4. Criar banco SQLite (se não existir)
+# 4. Criar banco SQLite
 touch database/database.sqlite
 
 # 5. Executar migrations
