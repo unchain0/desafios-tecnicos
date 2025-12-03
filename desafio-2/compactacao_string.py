@@ -1,3 +1,4 @@
+#!/usr/bin/env -S uv run
 """
 Desafio 2 - Compactação de String
 

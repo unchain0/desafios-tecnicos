@@ -1,3 +1,4 @@
+#!/usr/bin/env -S uv run
 """
 Desafio 1 - Manipulação de Dados
 Leitura de CSV, processamento e geração de JSON.
