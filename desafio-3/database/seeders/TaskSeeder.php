@@ -10,12 +10,10 @@ class TaskSeeder extends Seeder
     public function run(): void
     {
         $tasks = [
-            ['title' => 'Configurar ambiente de desenvolvimento', 'done' => true],
-            ['title' => 'Criar migration e model Task', 'done' => true],
-            ['title' => 'Implementar controller com CRUD', 'done' => true],
-            ['title' => 'Desenvolver interface com TailwindCSS', 'done' => false],
-            ['title' => 'Escrever testes automatizados', 'done' => false],
-            ['title' => 'Documentar projeto no README', 'done' => false],
+            ['title' => 'Documentar projeto no README', 'done' => true],
+            ['title' => 'Adicionar autenticação e vincular tasks ao usuário logado', 'done' => false],
+            ['title' => 'Implementar filtros e busca de tasks por status e título', 'done' => false],
+            ['title' => 'Adicionar prioridades e datas de vencimento às tasks', 'done' => false],
         ];
 
         foreach ($tasks as $task) {
