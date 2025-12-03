@@ -92,9 +92,7 @@ def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
         FileNotFoundError: Se o arquivo não existir.
         ValueError: Se o arquivo estiver vazio ou sem dados válidos.
     """
-    arquivo = Path(caminho_arquivo)
-
-    if not arquivo.exists():
+    if not (arquivo := Path(caminho_arquivo)).exists():
         raise FileNotFoundError(f"Arquivo não encontrado: {caminho_arquivo}")
 
     delimitador = detectar_delimitador(arquivo)
@@ -116,8 +114,7 @@ def ler_csv(caminho_arquivo: str) -> pd.DataFrame:
 
     df = df[df["preco"].notna() & (df["preco"] >= 0)]
 
-    linhas_invalidas = total_inicial - len(df)
-    if linhas_invalidas > 0:
+    if ((linhas_invalidas := total_inicial) - len(df)) > 0:
         logger.warning(f"{linhas_invalidas} linha(s) inválida(s) ignorada(s)")
 
     if df.empty:
