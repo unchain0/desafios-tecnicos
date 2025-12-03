@@ -120,7 +120,6 @@ O projeto segue boas práticas de arquitetura Laravel:
 
 ```bash
 vendor/bin/pint
-vendor/bin/pint --test
 php artisan test
 ```
 
@@ -132,14 +131,3 @@ O projeto inclui GitHub Actions (`.github/workflows/ci.yml`) que executa:
 - Migrations
 - Laravel Pint (code style)
 - Testes automatizados
-
-## Tecnologias
-
-- **Laravel 12** - Framework PHP
-- **Blade Components** - UI componentizada
-- **Alpine.js** - Reatividade no frontend
-- **TailwindCSS** - Framework CSS (via CDN)
-- **SQLite** - Banco de dados
-- **PHPUnit** - Testes automatizados
-- **Laravel Pint** - Code style
-- **GitHub Actions** - CI/CD
