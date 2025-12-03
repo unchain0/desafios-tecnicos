@@ -111,4 +111,44 @@ class TaskTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_index_returns_json_when_requested(): void
+    {
+        Task::create(['title' => 'JSON Task']);
+
+        $response = $this->getJson('/tasks');
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['title' => 'JSON Task']);
+    }
+
+    public function test_store_returns_json_when_requested(): void
+    {
+        $response = $this->postJson('/tasks', ['title' => 'Nova Task JSON']);
+
+        $response->assertStatus(201);
+        $response->assertJsonFragment(['title' => 'Nova Task JSON']);
+        $this->assertDatabaseHas('tasks', ['title' => 'Nova Task JSON', 'done' => false]);
+    }
+
+    public function test_toggle_returns_json_when_requested(): void
+    {
+        $task = Task::create(['title' => 'JSON Toggle', 'done' => false]);
+
+        $response = $this->patchJson("/tasks/{$task->id}/toggle");
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['id' => $task->id, 'done' => true]);
+    }
+
+    public function test_destroy_returns_json_when_requested(): void
+    {
+        $task = Task::create(['title' => 'JSON Delete']);
+
+        $response = $this->deleteJson("/tasks/{$task->id}");
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['success' => true]);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+    }
 }
