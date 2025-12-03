@@ -1,4 +1,4 @@
-# Task Manager — Desafio Técnico 3
+# Desafio 3 - Task Manager
 
 Mini CRUD de tarefas desenvolvido com **Laravel**, **Blade** e **TailwindCSS**.
 
