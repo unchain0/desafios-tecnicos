@@ -151,7 +151,12 @@ def processar_produtos(products_df: pd.DataFrame) -> ResultadoProcessamento:
 
 
 def exibir_resultado(resultado: ResultadoProcessamento) -> None:
-    """Exibe o resultado do processamento no console."""
+    """
+    Exibe o resultado do processamento no console.
+
+    Args:
+        resultado: ResultadoProcessamento com as estatísticas calculadas.
+    """
     print("=" * 50)
     print("RESULTADO DO PROCESSAMENTO".center(50))
     print("=" * 50)
@@ -204,14 +209,31 @@ def processar_arquivo_csv(
 
 
 def garantir_extensao(caminho: Path, extensao: str) -> Path:
-    """Adiciona ou normaliza extensão do arquivo para lowercase."""
-    if caminho.suffix.lower() != extensao or caminho.suffix != extensao:
+    """
+    Adiciona ou normaliza extensão do arquivo para lowercase.
+
+    Args:
+        caminho: Caminho do arquivo.
+        extensao: Extensão desejada (ex: ".json").
+
+    Returns:
+        Path com a extensão correta.
+
+    Note:
+        Se o arquivo já tiver a extensão correta (ignorando case), retorna o caminho original.
+    """
+    if caminho.suffix.lower() != extensao.lower() or caminho.suffix != extensao:
         return caminho.with_suffix(extensao)
     return caminho
 
 
 def parse_args() -> argparse.Namespace:
-    """Processa argumentos da linha de comando."""
+    """
+    Processa argumentos da linha de comando.
+
+    Returns:
+        argparse.Namespace com os argumentos processados.
+    """
     parser = argparse.ArgumentParser(
         description="Processa arquivo CSV de produtos e gera estatísticas em JSON.",
         add_help=False,
