@@ -10,6 +10,14 @@ Mini CRUD de tarefas desenvolvido com **Laravel**, **Blade** e **TailwindCSS**.
 
 ## Instalação
 
+Primeiro entre na pasta do projeto:
+
+```bash
+cd desafio-3
+```
+
+Depois execute os comandos abaixo:
+
 ```bash
 # 1. Instalar dependências
 composer install
@@ -20,16 +28,15 @@ cp .env.example .env
 # 3. Gerar chave da aplicação
 php artisan key:generate
 
-# 4. Executar migrations
-php artisan migrate
+# 4. Criar banco SQLite e executar migrations
+mkdir -p database
+touch database/database.sqlite
+php artisan migrate --no-interaction
 
 # 5. (Opcional) Popular com dados de exemplo
 php artisan db:seed
-```
 
-## Executando a Aplicação
-
-```bash
+# 6. Execute a aplicação
 php artisan serve
 ```
 
