@@ -27,6 +27,14 @@ Entre na pasta `desafio-2` e execute:
 
 ### Como módulo Python
 
+Primeiro inicie o Python no terminal:
+
+```bash
+uv run python
+```
+
+Depois, execute o código Python no prompt:
+
 ```python
 from compactacao_string import compactar_string
 
@@ -35,6 +43,8 @@ print(resultado)  # a3b2c1a3
 ```
 
 ### Via CLI
+
+Para executar via CLI, use o comando:
 
 ```bash
 uv run compactacao_string.py "aaabbcaaa"
