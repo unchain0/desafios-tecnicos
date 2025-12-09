@@ -1,6 +1,6 @@
 # Desafio 3 - Task Manager
 
-Mini CRUD de tarefas desenvolvido com **Laravel**, **Blade** e **TailwindCSS**.
+Mini CRUD de tarefas desenvolvido com **Laravel**, **Livewire** e **TailwindCSS**.
 
 ## Requisitos
 
@@ -10,33 +10,16 @@ Mini CRUD de tarefas desenvolvido com **Laravel**, **Blade** e **TailwindCSS**.
 
 ## Instalação
 
-Primeiro entre na pasta do projeto:
-
 ```bash
 cd desafio-3
-```
 
-Depois execute os comandos abaixo:
-
-```bash
-# 1. Instalar dependências
 composer install
-
-# 2. Copiar arquivo de configuração
 cp .env.example .env
-
-# 3. Gerar chave da aplicação
 php artisan key:generate
-
-# 4. Criar banco SQLite e executar migrations
-mkdir -p database
 touch database/database.sqlite
-php artisan migrate --no-interaction
+php artisan migrate
+php artisan db:seed  # opcional
 
-# 5. (Opcional) Popular com dados de exemplo
-php artisan db:seed
-
-# 6. Execute a aplicação
 php artisan serve
 ```
 
@@ -46,30 +29,27 @@ Acesse: **<http://localhost:8000>**
 
 ```txt
 app/
-├── Http/
-│   ├── Controllers/
-│   │   └── TaskController.php
-│   └── Requests/
-│       └── StoreTaskRequest.php
+├── Livewire/
+│   └── TaskManager.php
 ├── Models/
 │   └── Task.php
 ├── Services/
 │   └── TaskService.php
-database/
-├── migrations/
-│   └── 2024_01_01_000000_create_tasks_table.php
-├── seeders/
-│   └── TaskSeeder.php
 resources/views/
 ├── components/
-│   ├── alert.blade.php
-│   ├── button.blade.php
-│   ├── card.blade.php
-│   └── input.blade.php
-├── layouts/
-│   └── app.blade.php
-├── tasks/
-│   └── index.blade.php
+│   ├── layouts/
+│   │   └── app.blade.php
+│   ├── task/
+│   │   ├── form.blade.php
+│   │   ├── item.blade.php
+│   │   └── list.blade.php
+│   ├── confirm-modal.blade.php
+│   ├── empty-state.blade.php
+│   ├── page-header.blade.php
+│   ├── toast.blade.php
+│   └── validation-error.blade.php
+├── livewire/
+│   └── task-manager.blade.php
 routes/
 └── web.php
 tests/
@@ -79,62 +59,48 @@ tests/
 │   └── TaskServiceTest.php
 ```
 
-## Rotas Disponíveis
-
-| Método | Rota                 | Descrição              |
-| ------ | -------------------- | ---------------------- |
-| GET    | `/tasks`             | Listar todas as tasks  |
-| POST   | `/tasks`             | Criar nova task        |
-| PATCH  | `/tasks/{id}/toggle` | Alternar status (done) |
-| DELETE | `/tasks/{id}`        | Excluir task           |
-
-## Testando via Navegador
-
-1. Acesse `http://localhost:8000`
-2. Digite o título da task e clique em "Adicionar"
-3. Clique em "Concluir" para marcar como feita
-4. Clique em "Reabrir" para desmarcar
-5. Clique em "Excluir" para remover a task
-
 ## Funcionalidades
 
-- **Criar task**: Formulário com validação (título obrigatório, máx. 255 caracteres)
-- **Listar tasks**: Exibe todas as tasks ordenadas por data de criação
-- **Toggle status**: Alterna entre pendente e concluída
-- **Excluir task**: Remoção instantânea
-- **Ações AJAX**: Operações instantâneas sem reload de página (Alpine.js)
-- **Feedback visual**: Tasks concluídas aparecem riscadas
-- **Mensagens de sucesso**: Feedback visual nas operações
+- **Criar task**: Validação em tempo real (título obrigatório, máx. 255 caracteres)
+- **Listar tasks**: Ordenadas por data de criação (mais recentes primeiro)
+- **Toggle status**: Alterna entre pendente ⬜ e concluída ✅
+- **Excluir task**: Modal de confirmação personalizado
+- **Reatividade**: Operações instantâneas sem reload (Livewire)
+- **Feedback visual**: Toast de sucesso com auto-dismiss
 - **Design responsivo**: Interface adaptada para mobile e desktop
 
-## Testes Automatizados
+## Como Usar
 
-```bash
-php artisan test
-```
+1. Acesse `http://localhost:8000`
+2. Digite o título e clique em **Adicionar**
+3. Clique em **Concluir** para marcar como feita
+4. Clique em **Reabrir** para desmarcar
+5. Clique em **Excluir** → confirme no modal
 
 ## Arquitetura
 
-O projeto segue boas práticas de arquitetura Laravel:
-
-- **Skinny Controllers**: Controllers apenas recebem request e delegam para Services
-- **Service Layer**: Lógica de negócio isolada em `App\Services\TaskService`
-- **Form Requests**: Validação e sanitização em classes dedicadas
-- **Blade Components**: UI componentizada e reutilizável
-- **AJAX com Alpine.js**: Ações instantâneas sem reload de página
+- **Livewire**: Componente full-stack sem JavaScript manual
+- **Service Layer**: Lógica de negócio em `TaskService`
+- **Blade Components**: UI modular e reutilizável
+- **Alpine.js**: Interações locais (modal, toast)
 
 ## Qualidade de Código
 
 ```bash
+# Análise estática (PHPStan level 5)
+composer phpstan
+
+# Code style (Laravel Pint)
 vendor/bin/pint
-php artisan test
+
+# Testes
+composer test
 ```
 
 ## CI/CD
 
-O projeto inclui GitHub Actions (`.github/workflows/ci.yml`) que executa:
+GitHub Actions (`.github/workflows/ci.yml`):
 
-- Instalação de dependências
-- Migrations
 - Laravel Pint (code style)
+- PHPStan (análise estática)
 - Testes automatizados
