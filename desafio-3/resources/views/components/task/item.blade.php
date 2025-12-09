@@ -9,7 +9,6 @@
     </div>
 
     <div class="ml-4 shrink-0 flex gap-2">
-        {{-- Toggle Button --}}
         <button wire:click="toggleTask({{ $task->id }})" wire:loading.attr="disabled"
             wire:target="toggleTask({{ $task->id }})"
             class="{{ $task->done
@@ -19,8 +18,7 @@
             {{ $task->done ? 'Reabrir' : 'Concluir' }}
         </button>
 
-        {{-- Delete Button --}}
-        <button wire:click="deleteTask({{ $task->id }})" wire:confirm="Tem certeza que deseja excluir esta task?"
+        <button @click="$dispatch('confirm-delete', { action: { method: 'deleteTask', params: {{ $task->id }} } })"
             wire:loading.attr="disabled" wire:target="deleteTask({{ $task->id }})"
             class="bg-red-100 text-red-700 hover:bg-red-200 px-4 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50">
             Excluir
