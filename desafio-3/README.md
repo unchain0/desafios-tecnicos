@@ -4,7 +4,7 @@ Mini CRUD de tarefas desenvolvido com **Laravel**, **Livewire** e **TailwindCSS*
 
 ## Requisitos
 
-- PHP 8.2+
+- PHP 8.4+
 - Composer
 - Extensão PDO SQLite (`php-sqlite3`)
 
@@ -79,21 +79,16 @@ tests/
 
 ## Arquitetura
 
-- **Livewire**: Componente full-stack sem JavaScript manual
-- **Service Layer**: Lógica de negócio em `TaskService`
+- **Livewire**: Componente full-stack (CRUD reativo sem JavaScript manual)
+- **Alpine.js**: Interações de UI (modal, toast, animações) — incluído no Livewire
+- **Service Layer**: Lógica de negócio isolada em `TaskService`
 - **Blade Components**: UI modular e reutilizável
-- **Alpine.js**: Interações locais (modal, toast)
 
 ## Qualidade de Código
 
 ```bash
-# Análise estática (PHPStan level 5)
 composer phpstan
-
-# Code style (Laravel Pint)
 vendor/bin/pint
-
-# Testes
 composer test
 ```
 
