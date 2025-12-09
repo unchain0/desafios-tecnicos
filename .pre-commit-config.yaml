@@ -17,3 +17,23 @@ repos:
     hooks:
       - id: mypy
         args: [--strict, --ignore-missing-imports]
+  - repo: local
+    hooks:
+      - id: laravel-pint
+        name: Laravel Pint (PHP code style)
+        entry: bash -c 'cd desafio-3 && vendor/bin/pint --test'
+        language: system
+        files: ^desafio-3/.*\.php$
+        pass_filenames: false
+      - id: laravel-phpstan
+        name: PHPStan (PHP static analysis)
+        entry: bash -c 'cd desafio-3 && composer phpstan'
+        language: system
+        files: ^desafio-3/.*\.php$
+        pass_filenames: false
+      - id: laravel-tests
+        name: Laravel Tests (PHPUnit)
+        entry: bash -c 'cd desafio-3 && php artisan test'
+        language: system
+        files: ^desafio-3/.*\.php$
+        pass_filenames: false
