@@ -4,9 +4,8 @@ Mini CRUD de tarefas desenvolvido com **Laravel**, **Livewire** e **TailwindCSS*
 
 ## Requisitos
 
-- PHP 8.4+
-- Composer
-- Extensão PDO SQLite (`php-sqlite3`)
+- [PHP 8.4+](https://www.php.net/downloads)
+- [Composer](https://getcomposer.org/download/)
 
 ## Instalação
 
