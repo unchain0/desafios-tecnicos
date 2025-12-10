@@ -17,9 +17,9 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-2xl">
+    <main class="container mx-auto px-4 py-8 max-w-2xl">
         {{ $slot }}
-    </div>
+    </main>
 </body>
 
 </html>
