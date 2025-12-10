@@ -9,9 +9,11 @@ use Livewire\Component;
 
 class TaskManager extends Component
 {
-    #[Validate('required|string|max:255', message: [
+    public const MAX_TITLE_LENGTH = 255;
+
+    #[Validate('required|string|max:'.self::MAX_TITLE_LENGTH, message: [
         'required' => 'O título da task é obrigatório.',
-        'max' => 'O título deve ter no máximo 255 caracteres.',
+        'max' => 'O título deve ter no máximo '.self::MAX_TITLE_LENGTH.' caracteres.',
     ])]
     public string $title = '';
 
@@ -21,10 +23,20 @@ class TaskManager extends Component
     {
         $this->validate();
 
-        $taskService->create(['title' => $this->title]);
+        $taskService->create($this->getTaskData());
 
-        $this->title = '';
+        $this->resetForm();
         $this->flash('Task criada com sucesso!');
+    }
+
+    private function getTaskData(): array
+    {
+        return ['title' => $this->title];
+    }
+
+    private function resetForm(): void
+    {
+        $this->title = '';
     }
 
     public function toggleTask(Task $task, TaskService $taskService): void
