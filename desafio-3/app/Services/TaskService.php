@@ -19,7 +19,8 @@ class TaskService
 
     public function toggle(Task $task): Task
     {
-        $task->update(['done' => ! $task->done]);
+        $task->toggle();
+        $task->save();
 
         return $task;
     }
@@ -27,5 +28,26 @@ class TaskService
     public function delete(Task $task): void
     {
         $task->delete();
+    }
+
+    public function markAsDone(Task $task): Task
+    {
+        $task->markAsDone();
+        $task->save();
+
+        return $task;
+    }
+
+    public function markAsPending(Task $task): Task
+    {
+        $task->markAsPending();
+        $task->save();
+
+        return $task;
+    }
+
+    public function isTaskDone(Task $task): bool
+    {
+        return $task->isDone();
     }
 }
